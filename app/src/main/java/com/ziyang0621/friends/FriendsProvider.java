@@ -119,7 +119,7 @@ public class FriendsProvider extends ContentProvider{
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         Log.v(TAG, "delete(uri=" + uri);
 
-        if (uri.equals(FriendsContract.BASE_CONTENT_URI)) {
+        if (uri.equals(FriendsContract.URI_TABLE)) {
             deleteDatabase();
             return 0;
         }

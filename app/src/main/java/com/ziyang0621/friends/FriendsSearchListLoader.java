@@ -14,15 +14,17 @@ import java.util.List;
 /**
  * Created by ziyang0621 on 3/10/15.
  */
-public class FriendsListLoader extends AsyncTaskLoader<List<Friend>> {
-    private static final String LOG_TAG = FriendsListLoader.class.getSimpleName();
+public class FriendsSearchListLoader extends AsyncTaskLoader<List<Friend>> {
+    private static final String LOG_TAG = FriendsSearchListLoader.class.getSimpleName();
     private List<Friend> mFriends;
     private ContentResolver mContentResolver;
     private Cursor mCursor;
+    private String mFilterText;
 
-    public FriendsListLoader(Context context, Uri uri, ContentResolver contentResolver) {
+    public FriendsSearchListLoader(Context context, Uri uri, ContentResolver contentResolver, String filterText) {
         super(context);
         mContentResolver = contentResolver;
+        mFilterText = filterText;
     }
 
     @Override
@@ -33,7 +35,8 @@ public class FriendsListLoader extends AsyncTaskLoader<List<Friend>> {
                 FriendsContract.FriendsColumns.FRIENDS_EMAIL};
         List<Friend> entries = new ArrayList<Friend>();
 
-        mCursor = mContentResolver.query(FriendsContract.URI_TABLE, projection, null, null, null);
+        String selection = FriendsContract.FriendsColumns.FRIENDS_NAME + " LIKE '" + mFilterText + "%'";
+        mCursor = mContentResolver.query(FriendsContract.URI_TABLE, projection, selection, null, null);
         if (mCursor != null) {
             if (mCursor.moveToFirst()) {
                 do {
@@ -59,13 +62,10 @@ public class FriendsListLoader extends AsyncTaskLoader<List<Friend>> {
         }
 
         List<Friend> oldFriendList = mFriends;
-
         if (mFriends == null || mFriends.size() == 0) {
             Log.d(LOG_TAG, "++++++ No Data returned");
         }
-
         mFriends = friends;
-
         if (isStarted()) {
             super.deliverResult(friends);
         }

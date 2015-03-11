@@ -19,7 +19,7 @@ public class MainActivity extends FragmentActivity {
             FriendsListFragment friendsListFragment = new FriendsListFragment();
             fragmentManager.beginTransaction().add(android.R.id.content, friendsListFragment).commit();
         }
-        setContentView(R.layout.activity_main);
+//        setContentView(R.layout.activity_main);
     }
 
 
@@ -46,6 +46,7 @@ public class MainActivity extends FragmentActivity {
                 args.putString(FriendsDialog.DIALOG_TYPE, FriendsDialog.DELETE_DATABASE);
                 dialog.setArguments(args);
                 dialog.show(getSupportFragmentManager(), "delete-database");
+                break;
             case R.id.searchRecords:
                 Intent searchIntent = new Intent(MainActivity.this, SearchActivity.class);
                 startActivity(searchIntent);
